@@ -24,7 +24,7 @@ module.exports = {
 			user.getPrinters({where :{callsign : req.params.id}}).then(printers => {
 				if (!printers.length){res.send("Nice try, hacker");return;}
 				models.printer.getShareLink(models,req.params.id).then(response => {
-					res.send("http://teleType.personalspaceshow.lawyer:5000/printers/redeemShare/"+response);
+					res.send(req.headers.host+"/api/users/redeemShare/"+response);
 				});
 			});
 		});

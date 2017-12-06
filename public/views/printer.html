@@ -1,0 +1,15 @@
+<h1>Printers</h1>
+<div ng-app="TeleTypeApp" ng-controller="printerController" id="popupContainer" style="position:relative" ng-cloak>
+	<md-list flex ng-if="claimed.length">
+                <md-subheader class="md-no-sticky">Your printer</md-subheader>
+                <md-list-item class="md-1-line" ng-repeat="p in claimed track by $index">{{p}}
+			<md-button class="md-raised" ng-click="getShareLink(p)">share</md-button>
+                </md-list-item>
+        </md-list>
+	<md-list flex ng-if="unclaimed.length">
+		<md-subheader class="md-no-sticky">Unclaimed printers</md-subheader>
+		<md-list-item class="md-1-line" ng-repeat="p in unclaimed track by $index">{{p}} 
+			<md-button class="md-raised" ng-click="startClaim(p)">claim</md-button>
+		</md-list-item>
+	</md-list>
+</div>

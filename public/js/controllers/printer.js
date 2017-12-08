@@ -1,18 +1,11 @@
 angular.module('TeleTypeApp')
-	.controller('printerController', ['$scope','$http','$animate','$mdDialog','$mdMedia','$mdToast',function($scope,$http,$animate,$mdDialog,$mdMedia,$mdToast) {
+	.controller('printerController', ['$scope','$http','$animate','$mdDialog','$mdMedia','$mdToast','printerLoader',function($scope,$http,$animate,$mdDialog,$mdMedia,$mdToast,printerLoader) {
 		$scope.unclaimed = [];
 		$scope.claimed = [];
-		$http.get('/api/printers/unclaimed').success(function(data,status) {
-			for (var i=0; i < data.length; i++) {
-				$scope.unclaimed.push(data[i]);
-			} 
+		printerLoader.loadPrinters().then(results => {
+			$scope.unclaimed = results['unclaimed'];
+			$scope.claimed = results['yours'];
 		});
-		$http.get('/api/printers/belongToUser').success(function(data, status) {
-			for (var i=0; i<data.length; i++) {
-				$scope.claimed.push(data[i]);
-			}
-		});
-
 		$scope.getShareLink = function(id) {
 			$http.post('/api/printers/'+id+'/getShareLink').success(function(data,status) {
 				$mdDialog.show(

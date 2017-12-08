@@ -1,6 +1,6 @@
-<div ng-if="user == false">
+<div ng-show="user == false">
 	<md-button class="md-raised" ng-click="googleLogin()">Login with Google</md-button>
 </div>
-<div ng-if="user != false">
+<div ng-show="user != false">
 	<h1>Welcome, {{user}}</h1>
 </div>

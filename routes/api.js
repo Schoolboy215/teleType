@@ -5,6 +5,7 @@ var router = express.Router();
 
 var printerController = require('../controllers/printer');
 var userController = require('../controllers/user');
+var messageController = require('../controllers/message');
 
 router.get('/api', function(req,res) {
 	if (req.user)
@@ -42,5 +43,7 @@ router.post('/api/printers/:id/attemptClaim', ensureAuthenticated, function(req,
 
 router.get('/api/users/redeemShare/:code', ensureAuthenticated, function(req,res) {userController.redeemShare(req,res);});
 router.get('/api/users/redeemInvite/:code', ensureAuthenticated, function(req,res) {userController.redeemInvite(req,res);});
+
+router.post('/api/messages/send', ensureAuthenticated, function(req,res) {messageController.sendMessage(req,res);});
 
 module.exports = router;

@@ -129,6 +129,7 @@ module.exports = {
 					toAdd['from'] = m.from;
 					toAdd['to'] = m.to;
 					responseForPrinter['data']['messages'].push(toAdd);
+					m.destroy();
 				}
 			}
 			else {

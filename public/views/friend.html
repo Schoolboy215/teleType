@@ -2,8 +2,23 @@
 <md-list ng-if="friends.length">
 	<md-subheader class="md-no-sticky">Your friends</md-subheader>
 	<md-list-item class="md-1-line" ng-repeat="f in friends">
-		{{f.name}}
-	</md-list-item>		
+                {{f.name}}
+                <div ng-controller="fabCtrl as fab" ng-cloak>
+                <md-fab-speed-dial md-open="fab.isOpen" md-direction="right" class="md-fling">
+                        <md-fab-trigger>
+                                <md-button aria-label="options" class="md-fab">
+					<i class="fa fa-chevron-circle-right fa-3x" style="margin-top:7px"></i>
+                                </md-button>
+                        </md-fab-trigger>
+                        <md-fab-actions>
+                                <md-button aria-label="Message" ng-click="sendMessage(f.id)"class="md-fab md-mini">
+                                        <md-tooltip md-direction="up" md-visible="fab.tooltipVisible" md-autohide="false">Message</md-tooltip>
+					<i class="fa fa-envelope-open"></i>
+                                </md-button>
+                        </md-fab-actions>
+                </md-fab-speed-dial>
+                </div>
+        </md-list-item>
 </md-list>
 <div ng-if="!friends.length">
 	<md-subheader class="md-no-sticky">You have no friends</md-subheader>

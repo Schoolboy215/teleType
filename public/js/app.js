@@ -1,4 +1,4 @@
-var app = angular.module('TeleTypeApp', ['ngRoute','ngMaterial']);
+var app = angular.module('TeleTypeApp', ['ngRoute','ngMaterial','ngSanitize']);
 
 app.config(function($routeProvider) {
 	$routeProvider
@@ -7,6 +7,10 @@ app.config(function($routeProvider) {
 		})
 		.when('/printers', {
 			templateUrl: 'views/printer.html'
+		})
+		.when('/friends', {
+			templateUrl: 'views/friend.html',
+			controller: 'friendController'
 		})
 		.when('/login', {
 			templateUrl: 'views/login.html',

@@ -19,6 +19,7 @@ var models = require('./models');
 // Create App
 var app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(errorHandler());
 app.use(session({
 	secret:	config.secret,

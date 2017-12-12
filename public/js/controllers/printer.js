@@ -7,19 +7,19 @@ angular.module('TeleTypeApp')
 			$scope.claimed = results['yours'];
 		});
 		$scope.getShareLink = function(id) {
-			$http.post('/api/printers/'+id+'/getShareLink').success(function(data,status) {
+			printerLoader.getShareLink(id).then(data => {
 				$mdDialog.show(
 					$mdDialog.alert()
 					.title('Share this link with someone to let their messages go to your printer')
 					.textContent(data)
 					.ok('Got it')
 				);
-			})
+			});
 		}
 		$scope.startClaim = function(id) {
-			$http.post('/api/printers/'+id+'/startClaim').success(function(data,status) {
+			printerLoader.startClaim(id).then(data =>{
 				$scope.attemptClaim(id);
-			})
+			});
 		}
 		$scope.attemptClaim = function(id) {
 			var confirm = $mdDialog.prompt()

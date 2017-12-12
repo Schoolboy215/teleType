@@ -1,0 +1,12 @@
+<h1>Friends</h1>
+<md-list ng-if="friends.length">
+	<md-subheader class="md-no-sticky">Your friends</md-subheader>
+	<md-list-item class="md-1-line" ng-repeat="f in friends">
+		{{f.name}}
+	</md-list-item>		
+</md-list>
+<div ng-if="!friends.length">
+	<md-subheader class="md-no-sticky">You have no friends</md-subheader>
+</div>
+
+<md-button class="md-raised" ng-click="getInviteLink()">Get your share link</md-button>

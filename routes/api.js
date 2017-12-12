@@ -15,25 +15,25 @@ router.get('/api', function(req,res) {
 });
 
 //BEGINNING OF REMOTE API
-router.all('/api/firstContact', function(req,res) {
+router.get('/api/remote/firstContact', function(req,res) {
 	printerController.firstContact(req,res);
 });
-router.get('/api/printerCheckIn', function(req,res) {
-	printerController.getToken(req,res);
-});
-router.post('/api/getMessages', function(req,res) {
+router.post('/api/remote/checkIn', function(req,res) {
 	printerController.checkMessages(req,res);
 });
 
+//BEGINNING OF FRONTEND
 function ensureAuthenticated(req, res, next) {
 	if (req.user)
 		return next();
-	req.session.returnTo = '#';//req.url;
+	req.session.returnTo = '#';
 	res.sendStatus(401); 
 }
 
-//BEGINNING OF FRONTEND
 router.get('/api/curUser', function(req,res) {if (req.user) res.send(req.user.name);else res.send(false);});
+router.get('/api/users/getFriends', ensureAuthenticated, function(req,res) {userController.getFriends(req,res);});
+router.get('/api/users/getInviteLink', ensureAuthenticated, function(req,res) {userController.getInviteLink(req,res);});
+
 router.get('/api/printers/unclaimed', ensureAuthenticated, function(req,res) {printerController.unclaimed(req,res);});
 router.get('/api/printers/belongToUser', ensureAuthenticated, function(req,res) {printerController.belongToUser(req,res);});
 router.post('/api/printers/:id/getShareLink', ensureAuthenticated, function(req,res) {printerController.getShareLink(req,res);});
@@ -41,5 +41,6 @@ router.post('/api/printers/:id/startClaim', ensureAuthenticated, function(req,re
 router.post('/api/printers/:id/attemptClaim', ensureAuthenticated, function(req,res) {printerController.attemptClaim(req,res);});
 
 router.get('/api/users/redeemShare/:code', ensureAuthenticated, function(req,res) {userController.redeemShare(req,res);});
+router.get('/api/users/redeemInvite/:code', ensureAuthenticated, function(req,res) {userController.redeemInvite(req,res);});
 
 module.exports = router;

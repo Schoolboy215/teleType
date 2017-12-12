@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
 });
 	var Printer = sequelize.define("printer", {
 		callsign: DataTypes.STRING,
-		key: DataTypes.STRING,
+		code: DataTypes.STRING,
 		claimed: DataTypes.BOOLEAN
 	});
 
@@ -25,8 +25,10 @@ module.exports = function(sequelize, DataTypes) {
 	Printer.attemptClaim = function(models, _printer, _code) {
 		return new Promise(function (resolve,reject) {
 			_printer.getClaim().then(claim => {
-				if (claim.code == _code)
+				if (claim.code == _code){
 					resolve(true);
+					_printer.sendMessage(models,"You were claimed");
+				}
 				else
 					resolve(false);
 			});
@@ -47,7 +49,6 @@ module.exports = function(sequelize, DataTypes) {
 
 	Printer.associate = function(models) {
 		Printer.belongsToMany(models.user, {through:UserPrinter});
-		Printer.hasOne(models.token);
 		Printer.hasOne(models.claim);
 		Printer.hasMany(models.message);
 	}

@@ -1,6 +1,10 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
+
+	var UserUser = sequelize.define('friends', {
+});
+
         var User = sequelize.define("user", {
                 googleId:	DataTypes.STRING,
 		name:		DataTypes.STRING
@@ -14,9 +18,19 @@ module.exports = function(sequelize, DataTypes) {
 		});
 	};
 
+	User.prototype.generateInvite = function(models) {
+		return new Promise(function (resolve,reject) {
+			models.invite.create({code: Math.floor(10000+Math.random()*50000)}).then(invite => {
+				resolve(invite);
+			});
+		});
+	};
+
 	User.associate = function(models) {
-		User.belongsToMany(models.printer, {through : "user_printer" });
+		User.belongsToMany(models.printer, {through: "user_printer" });
+		User.belongsToMany(User, {as: 'Friends', through: "friends" });
 		User.hasOne(models.claim);
+		User.hasOne(models.invite);
         }
 
         return User;

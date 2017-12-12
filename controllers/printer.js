@@ -81,58 +81,63 @@ module.exports = {
 //START OF REMOTE API
     firstContact: function(req, res) {
 	var callsign = crypto.randomBytes(3).toString('hex');
-	var key = crypto.randomBytes(32).toString('hex');
+	var code = crypto.randomBytes(9).toString('hex');
 	var responseForPrinter = {};
 
-	responseForPrinter['key'] = key;
+	responseForPrinter['code'] = code;
 	responseForPrinter['callsign'] = callsign;
 
-	models.printer.create({callsign:callsign, key:key, claimed:false});
+	models.printer.create({callsign:callsign, code:code, claimed:false});
 	res.send(JSON.stringify(responseForPrinter));
     },
 
-    getToken: function(req, res) {
-	models.printer.findOne({where : {callsign: req.query.callsign}}).then(function(remotePrinter) {
-		if (!remotePrinter)
-		{
-            		res.status(404).send("No such printer was found");
-			return;
-		}
-		var t = models.token.build({code:crypto.randomBytes(4).toString('hex')});
-		var cipher = crypto.createCipher('aes-256-ctr',remotePrinter.key);
-		var responseForPrinter = {};
-
-		var encrypted = cipher.update(t.code,'hex','hex');
-		encrypted += cipher.final();
-		responseForPrinter["code"] = encrypted;
-		responseForPrinter["plain"] = t.code;
-		responseForPrinter["key"] = remotePrinter.key;
-		remotePrinter.setToken(t);
-        	res.send(JSON.stringify(responseForPrinter));
-	})
-    },
-
     checkMessages: function(req, res) {
-	models.printer.findOne({where : {callsign: req.params.callsign}}).then(function(remotePrinter) {
+	console.log(req.body)
+	models.printer.findOne({where : {callsign: req.body['callsign']}}).then(function(remotePrinter) {
+		var responseForPrinter = {}
 		if (!remotePrinter)
 		{
-			res.status(404).send("No such printer was found");
+			console.log('no printer found');
+			responseForPrinter['status'] = 2;
+			responseForPrinter['humanReadable'] = "Callsign not recognized/code not correct";
+			responseForPrinter['data'] = {};
+			res.send(JSON.stringify(responseForPrinter));
 			return;
 		}
 		
-		var t = remotePrinter.getToken();
-		var responseForPrinter = {};
-
-		if ((t.code + remotePrinter.callsign) == req.params.nonce)
+		if (remotePrinter.code != req.body['code'] || !req.body['code'])
 		{
-			responseForPrinter["status"] = "verified";
-			responseForPrinter["messages"] = [];		
+			console.log('bad code. was looking for '+remotePrinter.code);
+			responseForPrinter['status'] = 2;
+                        responseForPrinter['humanReadable'] = "Callsign not recognized/code not correct";
+                        responseForPrinter['data'] = {};
+                        res.send(JSON.stringify(responseForPrinter));
+                        return;
 		}
-		else
-		{
-			responseForPrinter["status"] = "not verified";
-		}
-		res.send(JSON.stringify(responseForPrinter));
+		
+		remotePrinter.getMessages().then(messages=>{
+			if (messages.length){
+				responseForPrinter['status'] = 1;
+				responseForPrinter['humanReadable'] = messages.length+ " new messages";
+				responseForPrinter['data'] = {};
+                                responseForPrinter['data']['messages'] = [];
+				for (var i = 0; i < messages.length; i++) {
+					var m = messages[i];
+					var toAdd = {};
+					toAdd['body'] = m.body;
+					toAdd['timestamp'] = m.timestamp;
+					toAdd['from'] = m.from;
+					toAdd['to'] = m.to;
+					responseForPrinter['data']['messages'].push(toAdd);
+				}
+			}
+			else {
+				responseForPrinter['status'] = 0;
+				responseForPrinter['humanReadable'] = "No new messages";
+				responseForPrinter['data'] = {'messages':[]};
+			}
+			res.send(JSON.stringify(responseForPrinter));
+		});
 	})
     }
 }

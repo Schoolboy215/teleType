@@ -53,10 +53,10 @@ module.exports = {
 		
 	},
 
-	getInviteLink: function(req,res) {
+	getInviteCode: function(req,res) {
 		models.user.findOne({where : {id:req.user.id}}).then(user => {
 			user.generateInvite(models).then(invite => {
-				res.send(req.headers.host+"/api/users/redeemInvite/"+invite.code);
+				res.send(String(invite.code));
 				user.setInvite(invite);
 			});
 		});
@@ -64,9 +64,9 @@ module.exports = {
 
 	redeemInvite: function(req,res) {
 		models.user.findOne({where:{id:req.user.id}}).then(user => {
-			models.invite.findOne({where:{code:req.params.code, userId: {[Op.not]:null}}}).then(invite => {
+			models.invite.findOne({where:{code:req.body.code, userId: {[Op.not]:null}}}).then(invite => {
 				if (!invite){
-					res.send("invalid/expired invite code");
+					res.status(400).send("invalid/expired invite code");
 					return;
 				}
 				invite.getUser().then(inviteUser => {
@@ -75,18 +75,34 @@ module.exports = {
 						for (var i=0; i<friends.length; i++)
 							names.push(friends[i].id);
 						if (names.indexOf(inviteUser.id) > -1) {
-							res.redirect(req.headers.host+'#friends');
+							res.send("You're already friends");
 							return;
 						} else {
 							user.addFriend(inviteUser);
 							inviteUser.addFriend(user);
-							res.redirect(req.headers.host+'#friends');
+							res.send("You are now friends with " + inviteUser.name);
 							return;
 						}
 					});
 				});
 			})
 		});
+	},
+
+	removeFriend: function(req,res) {
+		models.user.findOne({where:{id:req.user.id}}).then(user => {
+			user.getFriends({where:{id:req.body.id}}).then(friends => {
+				if (!friends.length){
+					res.send("That user isn't in your friend list");
+					return;
+				}
+				var friend = friends[0];
+				user.removeFriend(friend);
+				friend.removeFriend(user);
+				res.send("You are no longer friends with "+friend.name);
+				return;
+			});
+		})
 	}
 	//END OF FRONTEND API
 }

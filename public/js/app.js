@@ -30,4 +30,9 @@ app.config(function($routeProvider) {
 	}
 }]).config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('authResponseInterceptor');
-}]);
+}]).config(function($mdThemingProvider) {
+	$mdThemingProvider.theme('blue-grey')
+		.primaryPalette('blue-grey')
+		.accentPalette('amber');
+	$mdThemingProvider.setDefaultTheme('blue-grey');
+});

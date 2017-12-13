@@ -6,15 +6,19 @@
                 <div ng-controller="fabCtrl as fab" ng-cloak>
                 <md-fab-speed-dial md-open="fab.isOpen" md-direction="right" class="md-fling">
                         <md-fab-trigger>
-                                <md-button aria-label="options" class="md-fab">
+                                <md-button aria-label="options" class="md-fab md-primary">
 					<i class="fa fa-chevron-circle-right fa-3x" style="margin-top:7px"></i>
                                 </md-button>
                         </md-fab-trigger>
                         <md-fab-actions>
-                                <md-button aria-label="Message" ng-click="sendMessage(f.id)"class="md-fab md-mini">
+                                <md-button aria-label="Message" ng-click="sendMessage(f.id)"class="md-fab md-mini md-primary">
                                         <md-tooltip md-direction="up" md-visible="fab.tooltipVisible" md-autohide="false">Message</md-tooltip>
 					<i class="fa fa-envelope-open"></i>
                                 </md-button>
+				<md-button aria-label="Remove" ng-click="removeFriend(f.id,f.name)" class="md-fab md-mini md-warn">
+					<md-tooltip md-direction="down" md-visible="fab.tooltipVisible" md-autohide="false">Remove</md-tooltip>
+					<i class="fa fa-minus-square"></i>
+				</md-button>
                         </md-fab-actions>
                 </md-fab-speed-dial>
                 </div>
@@ -24,4 +28,5 @@
 	<md-subheader class="md-no-sticky">You have no friends</md-subheader>
 </div>
 
-<md-button class="md-raised" ng-click="getInviteLink()">Get your share link</md-button>
+<md-button class="md-raised" md-colors="{background: 'primary-700',color: 'primary-100'}" ng-click="getInviteCode()">Get your invite code</md-button>
+<md-button class="md-raised" md-colors="{background: 'primary-400',color: 'primary-50'}" ng-click="useInviteCode()">Use someone else's invite code</md-button>

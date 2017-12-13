@@ -33,7 +33,9 @@ function ensureAuthenticated(req, res, next) {
 
 router.get('/api/curUser', function(req,res) {if (req.user) res.send(req.user.name);else res.send(false);});
 router.get('/api/users/getFriends', ensureAuthenticated, function(req,res) {userController.getFriends(req,res);});
-router.get('/api/users/getInviteLink', ensureAuthenticated, function(req,res) {userController.getInviteLink(req,res);});
+router.get('/api/users/getInviteCode', ensureAuthenticated, function(req,res) {userController.getInviteCode(req,res);});
+router.post('/api/users/useInviteCode', ensureAuthenticated, function(req,res) {userController.redeemInvite(req,res);});
+router.post('/api/users/removeFriend', ensureAuthenticated, function(req,res) {userController.removeFriend(req,res);});
 
 router.get('/api/printers/unclaimed', ensureAuthenticated, function(req,res) {printerController.unclaimed(req,res);});
 router.get('/api/printers/belongToUser', ensureAuthenticated, function(req,res) {printerController.belongToUser(req,res);});

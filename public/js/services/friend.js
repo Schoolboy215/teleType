@@ -8,13 +8,20 @@ angular.module('TeleTypeApp')
 			});
 		}
 
-		this.getInviteLink = function(){
+		this.getInviteCode = function(){
 			return $q.all([
-				$http.get('/api/users/getInviteLink')
+				$http.get('/api/users/getInviteCode')
 			]).then(function(results) {
-				console.log("service done");
 				return results[0]['data'];
 			});
+		}
+
+		this.useInviteCode = function(code) {
+			return $http.post('/api/users/useInviteCode',{'code':code});
+		}
+
+		this.removeFriend = function(id) {
+			return $http.post('/api/users/removeFriend',{'id':id});
 		}
 
 		return this;

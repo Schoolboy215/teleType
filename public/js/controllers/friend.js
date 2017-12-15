@@ -1,17 +1,25 @@
 angular.module('TeleTypeApp')
 	.controller('friendController', ['$scope','$http','$animate','$mdDialog','$mdMedia','$mdToast','friendService',function($scope,$http,$animate,$mdDialog,$mdMedia,$mdToast,friendService) {
 		$scope.friends = [];
+		$scope.loading = false;
+
+		$scope.startLoad = function() {$scope.loading = true;$("document.body").css("opacity", 0.2);}
+		$scope.stopLoad = function() {$scope.loading = false;$("document.body").css("opacity", 1);}
 
 		$scope.loadFriends = function() {
+			$scope.startLoad();
 			friendService.loadFriends().then( result => {
 				$scope.friends = result;
+				$scope.stopLoad();
 			});
 		}
 
 		$scope.loadFriends();
 
 		$scope.getInviteCode = function() {
+			$scope.startLoad();
 			friendService.getInviteCode().then(result => {
+				$scope.stopLoad();
 				$mdDialog.show(
 					$mdDialog.alert()
 					.title('Have your friend use this code on their friends page')
@@ -30,7 +38,9 @@ angular.module('TeleTypeApp')
 				.ok('Use')
 				.cancel('Cancel');
 			$mdDialog.show(codePrompt).then(function(code) {
+				$scope.startLoad();
 				friendService.useInviteCode(code).then(result => {
+					$scope.stopLoad();
 					$mdToast.show(
 						$mdToast.simple().textContent(result['data']).position("top right").hideDelay(2000)
 					);
@@ -52,7 +62,9 @@ angular.module('TeleTypeApp')
 				.ok('Yes')
 				.cancel('No');
 			$mdDialog.show(confirmRemove).then(function() {
+				$scope.startLoad();
 				friendService.removeFriend(id).then(result => {
+					$scope.stopLoad();
 					$mdToast.show(
 						$mdToast.simple()
 						.textContent(result['data'])
@@ -75,7 +87,9 @@ angular.module('TeleTypeApp')
 				.cancel('Cancel');
 
 			$mdDialog.show(messagePrompt).then(function(result) {
+				$scope.startLoad();
 				$http.post('/api/messages/send',{'user':id, 'message': result}).then(response => {
+					$scope.stopLoad();
 					$mdToast.show(
 						$mdToast.simple()
 						.textContent(response['data'])

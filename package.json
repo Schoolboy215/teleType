@@ -4,7 +4,9 @@
   "description": "The server portion of the teleType project",
   "main": "teleType.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node teleType.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "stop": "pkill --signal SIGINT teleType"
   },
   "author": "",
   "license": "ISC",

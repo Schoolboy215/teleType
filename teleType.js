@@ -10,7 +10,7 @@ var	express = require('express'),
 	passport = require('passport');
 
 // Load config
-var config = require('./config')('local');
+var config = require('./config')('production');
 require('./config/passport')(passport,config);
 
 // Initialize DB

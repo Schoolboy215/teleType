@@ -5,7 +5,8 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-		<link rel="stylesheet" type="text/css" href="stylesheets/loader.css" />
+		<link rel="stylesheet" type="text/css" href="/stylesheets/loader.css" />
+		<link rel="stylesheet" type="text/css" href="/stylesheets/docs.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<body>
@@ -26,31 +27,49 @@
 
 		<md-sidenav
 			class="md-sidenav-left"
+			style="min-height:100%;"
 			md-component-id="left"
                         md-is-locked-open="$mdMedia('gt-md')"
                         md-whiteframe="4">
-                        <md-toolbar class="md-accent">
-                        	<h1 class="md-toolbar-tools">TeleType</h1>
-                        </md-toolbar>
-                        <md-content>
-                        	<md-button ng-click="nc.toggleLeft()" ng-href="#printers">
-                                	Printers
-                                </md-button>
-                                <md-button ng-click="nc.toggleLeft()" ng-href="#friends">
-                                	Friends
-                                </md-button>
-                                <md-button ng-if="!nc.curUser" ng-click="nc.toggleLeft()" ng-href="#login">
-                                	Login
-                                </md-button>
-                	</md-content>
+                        <header md-colors="{background:'accent',color:'accent-100'}" class="nav-header md-accent">
+                        	<h1 style="padding-bottom:20px" class="md-heading">TeleType</h1>
+                        </header>
+			<md-content flex role="navigation">
+			<ul class="docs-menu">
+				<li class="parent-list-item">
+					<menu-link section="section" class="ng-scope ng-isolate-scope">
+	                       			<a class="md-button md-ink-ripple" md-colors="{background:'accent'}" ng-click="nc.toggleLeft()" ng-href="#printers" style>
+							<span class="ng-scope" style>Printers</span>
+							<div class="md-ripple-container" style></div>
+	        	                	</a>
+					</menu-link>
+				</li>
+				<li class="parent-list-item">
+                                        <menu-link section="section" class="ng-scope ng-isolate-scope">
+                                                <a class="md-button md-ink-ripple" md-colors="{background:'accent'}" ng-click="nc.toggleLeft()" ng-href="#friends" style>
+                                                        <span class="ng-scope" style>Friends</span>
+                                                        <div class="md-ripple-container" style></div>
+                                                </a>
+                                        </menu-link>
+                                </li>
+				<li ng-if="!nc.curUser" class="parent-list-item">
+                                        <menu-link section="section" class="ng-scope ng-isolate-scope">
+                                                <a class="md-button md-ink-ripple" md-colors="{background:'accent'}" ng-click="nc.toggleLeft()" ng-href="#login" style>
+                                                        <span class="ng-scope" style>Login</span>
+                                                        <div class="md-ripple-container" style></div>
+                                                </a>
+                                        </menu-link>
+                                </li>
+			</ul>
+			</md-content>
                 </md-sidenav>
 
-		</div>
 		<div class="container">
 			<div ng-view>
 			</div>
 		</div>
 		</section>
+		</div>
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>-->
 		<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>-->
@@ -62,7 +81,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-messages.min.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script>
 
 	        <script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
 		

@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
 		});
 	};
 
-	Printer.getShareLink = function(models, _callSign) {
+	Printer.getShareCode = function(models, _callSign) {
 		return new Promise(function (resolve,reject) {
 			models.printer.findOne({where : {callsign : _callSign}}).then(printer => {
 				var generatedCode = Math.floor(10000+Math.random()*50000); 

@@ -18,13 +18,13 @@ module.exports = {
 			res.send(JSON.stringify(response));
 		})
 	},
-	getShareLink: function(req,res) {
+	getShareCode: function(req,res) {
 		if(!req.user) {res.sendStatus(401);return;}
 		models.user.findOne({where : {id:req.user.id}}).then(user => {
 			user.getPrinters({where :{callsign : req.params.id}}).then(printers => {
 				if (!printers.length){res.send("Nice try, hacker");return;}
-				models.printer.getShareLink(models,req.params.id).then(response => {
-					res.send(req.headers.host+"/api/users/redeemShare/"+response);
+				models.printer.getShareCode(models,req.params.id).then(response => {
+					res.send(response.toString());
 				});
 			});
 		});

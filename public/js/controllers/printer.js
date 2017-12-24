@@ -2,18 +2,42 @@ angular.module('TeleTypeApp')
 	.controller('printerController', ['$scope','$http','$animate','$mdDialog','$mdMedia','$mdToast','printerLoader',function($scope,$http,$animate,$mdDialog,$mdMedia,$mdToast,printerLoader) {
 		$scope.unclaimed = [];
 		$scope.claimed = [];
-		printerLoader.loadPrinters().then(results => {
-			$scope.unclaimed = results['unclaimed'];
-			$scope.claimed = results['yours'];
-		});
-		$scope.getShareLink = function(id) {
-			printerLoader.getShareLink(id).then(data => {
+		$scope.loadPrinters = function() {
+			printerLoader.loadPrinters().then(results => {
+				$scope.unclaimed = results['unclaimed'];
+				$scope.claimed = results['yours'];
+			});
+		}
+		$scope.getShareCode = function(id) {
+			printerLoader.getShareCode(id).then(data => {
 				$mdDialog.show(
 					$mdDialog.alert()
-					.title('Share this link with someone to let their messages go to your printer')
+					.title('Share this code with someone to let their messages go to your printer')
 					.textContent(data)
 					.ok('Got it')
 				);
+			});
+		}
+		$scope.useShareCode = function() {
+			var codePrompt = $mdDialog.prompt()
+				.title("Use someone else's printer share code")
+				.textContent("This will mean both of your messages will print on the same printer")
+				.placeholder('00000')
+				.ariaLabel('code input')
+				.ok('Use')
+				.cancel('Cancel');
+			$mdDialog.show(codePrompt).then(function(code) {
+				printerLoader.useShareCode(code).then(result => {
+					$mdToast.show(
+						$mdToast.simple().textContent(result['data']).position("top right").hideDelay(2000)
+					);
+					$scope.loadPrinters();
+				},error => {
+					$mdToast.show(
+						$mdToast.simple().textContent(error['data']).position("top right").hideDelay(2000)
+					);
+				});
+			}, function() {
 			});
 		}
 		$scope.startClaim = function(id) {
@@ -48,4 +72,5 @@ angular.module('TeleTypeApp')
 				})
 			});
 		}
+		$scope.loadPrinters();
 	}]);

@@ -3,7 +3,7 @@
 	<md-list flex ng-if="claimed.length">
                 <md-subheader class="md-no-sticky">Your printer</md-subheader>
                 <md-list-item class="md-1-line" ng-repeat="p in claimed track by $index">{{p}}
-			<md-button class="md-raised md-primary" ng-click="getShareLink(p)">share</md-button>
+			<md-button class="md-raised md-primary" ng-click="getShareCode(p)">share</md-button>
                 </md-list-item>
         </md-list>
 	<md-list flex ng-if="unclaimed.length">
@@ -12,4 +12,5 @@
 			<md-button class="md-raised" ng-click="startClaim(p)">claim</md-button>
 		</md-list-item>
 	</md-list>
+	<md-button class="md-raised" md-colors="{background: 'primary-400',color: 'primary-50'}" ng-click="useShareCode()">Use someone else's share code</md-button>
 </div>

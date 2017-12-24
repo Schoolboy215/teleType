@@ -39,11 +39,11 @@ router.post('/api/users/removeFriend', ensureAuthenticated, function(req,res) {u
 
 router.get('/api/printers/unclaimed', ensureAuthenticated, function(req,res) {printerController.unclaimed(req,res);});
 router.get('/api/printers/belongToUser', ensureAuthenticated, function(req,res) {printerController.belongToUser(req,res);});
-router.post('/api/printers/:id/getShareLink', ensureAuthenticated, function(req,res) {printerController.getShareLink(req,res);});
+router.get('/api/printers/:id/getShareCode', ensureAuthenticated, function(req,res) {printerController.getShareCode(req,res);});
 router.post('/api/printers/:id/startClaim', ensureAuthenticated, function(req,res) {	printerController.startClaim(req,res);});
 router.post('/api/printers/:id/attemptClaim', ensureAuthenticated, function(req,res) {printerController.attemptClaim(req,res);});
 
-router.get('/api/users/redeemShare/:code', ensureAuthenticated, function(req,res) {userController.redeemShare(req,res);});
+router.post('/api/users/redeemShare', ensureAuthenticated, function(req,res) {userController.redeemShare(req,res);});
 router.get('/api/users/redeemInvite/:code', ensureAuthenticated, function(req,res) {userController.redeemInvite(req,res);});
 
 router.post('/api/messages/send', ensureAuthenticated, function(req,res) {messageController.sendMessage(req,res);});

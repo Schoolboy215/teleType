@@ -8,7 +8,8 @@ module.exports = function(app, passport) {
 	app.get('/login/callback',
         	passport.authenticate('google'),
 		function(req,res) {
-			res.redirect(req.session.returnTo || '/#/');
+			//res.redirect(req.session.returnTo || '#');
+			res.redirect('/');
 			//delete req.session.returnTo;
 		}
 	);

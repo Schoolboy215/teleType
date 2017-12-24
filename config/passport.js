@@ -5,7 +5,7 @@ module.exports = function(passport,config) {
 	passport.use(new GoogleStrategy({
         	clientID: config.googleClientId,
         	clientSecret: config.googleClientSecret,
-        	callbackURL: 'http://teletype.personalspaceshow.lawyer/login/callback'
+        	callbackURL: 'https://teletype.personalspaceshow.lawyer/login/callback'
 	},
         function(token, tokenSecret, profile, done) {
                 process.nextTick(function() {

@@ -9,12 +9,16 @@ angular.module('TeleTypeApp')
 			});
 		}
 
-		this.getShareLink = function(id) {
+		this.getShareCode = function(id) {
 			return $q.all([
-				$http.post('/api/printers/'+id+'/getShareLink')
+				$http.get('/api/printers/'+id+'/getShareCode')
 			]).then(function(results) {
 				return results[0]['data'];
 			});
+		}
+
+		this.useShareCode = function(code) {
+			return $http.post('/api/users/redeemShare',{'code':code});
 		}
 
 		this.startClaim = function(id) {

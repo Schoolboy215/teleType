@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
 	});
 
 	Printer.prototype.sendMessage = function(models,_message) {
-		models.message.create({body:_message}).then(message => {
+		models.message.create({body:_message,from:"Server",to:"Printer"}).then(message => {
 			this.addMessage(message);
 		})
 	};

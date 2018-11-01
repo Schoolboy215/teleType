@@ -17,6 +17,14 @@ angular.module('TeleTypeApp')
 			});
 		}
 
+		this.sendUpdate = function(id) {
+			return $q.all([
+				$http.post('/api/printers/'+id+'/sendUpdate')
+			]).then(function(results) {
+				return results[0]['data'];
+			});
+		}
+
 		this.useShareCode = function(code) {
 			return $http.post('/api/users/redeemShare',{'code':code});
 		}

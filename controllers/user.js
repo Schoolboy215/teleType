@@ -13,7 +13,7 @@ module.exports = {
 	redeemShare: function(req,res) {
 		console.log("got an api request to redeem");
 		console.log(req.originalUrl);
-		models.user.findOne({where : {id:req.user.id}}).then(user => {
+		models.user.findOne({where : {id:req.session.user.id}}).then(user => {
 			if (user) {
 				models.share.findOne({where : {code:req.body.code, claimed: false}}).then(share => {
 					if (share){
@@ -35,7 +35,7 @@ module.exports = {
 	},
 
 	getFriends: function(req,res) {
-		models.user.findOne({where : {id:req.user.id}}).then(user => {
+		models.user.findOne({where : {id:req.session.user.id}}).then(user => {
 			user.getFriends().then(friends => {
 				var toReturn = [];
 				for (var i=0; i<friends.length; i++) {
@@ -52,7 +52,7 @@ module.exports = {
 	},
 
 	getInviteCode: function(req,res) {
-		models.user.findOne({where : {id:req.user.id}}).then(user => {
+		models.user.findOne({where : {id:req.session.user.id}}).then(user => {
 			user.generateInvite(models).then(invite => {
 				res.send(String(invite.code));
 				user.setInvite(invite);
@@ -61,7 +61,7 @@ module.exports = {
 	},
 
 	redeemInvite: function(req,res) {
-		models.user.findOne({where:{id:req.user.id}}).then(user => {
+		models.user.findOne({where:{id:req.session.user.id}}).then(user => {
 			models.invite.findOne({where:{code:req.body.code, userId: {[Op.not]:null}}}).then(invite => {
 				if (!invite){
 					res.status(400).send("invalid/expired invite code");
@@ -88,7 +88,7 @@ module.exports = {
 	},
 
 	removeFriend: function(req,res) {
-		models.user.findOne({where:{id:req.user.id}}).then(user => {
+		models.user.findOne({where:{id:req.session.user.id}}).then(user => {
 			user.getFriends({where:{id:req.body.id}}).then(friends => {
 				if (!friends.length){
 					res.send("That user isn't in your friend list");

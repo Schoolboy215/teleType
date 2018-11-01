@@ -9,7 +9,7 @@ module.exports = {
     },
 //START OF FRONTEND API
 	unclaimed: function(req,res) {
-		if (!req.user) {res.sendStatus(401);return;}
+		if (!req.session.user) {res.sendStatus(401);return;}
 		models.printer.findAll({where :{claimed:false}}).then(printers => {
 			var response = [];
 			for (var i=0; i < printers.length; i++) {
@@ -19,8 +19,8 @@ module.exports = {
 		})
 	},
 	getShareCode: function(req,res) {
-		if(!req.user) {res.sendStatus(401);return;}
-		models.user.findOne({where : {id:req.user.id}}).then(user => {
+		if(!req.session.user) {res.sendStatus(401);return;}
+		models.user.findOne({where : {id:req.session.user.id}}).then(user => {
 			user.getPrinters({where :{callsign : req.params.id}}).then(printers => {
 				if (!printers.length){res.send("Nice try, hacker");return;}
 				models.printer.getShareCode(models,req.params.id).then(response => {
@@ -30,8 +30,8 @@ module.exports = {
 		});
 	},
 	belongToUser: function(req,res) {
-		if (!req.user) {res.sendStatus(401);return;}
-		models.user.findOne({where : {id:req.user.id}}).then(user => {
+		if (!req.session.user) {res.sendStatus(401);return;}
+		models.user.findOne({where : {id:req.session.user.id}}).then(user => {
 			user.getPrinters().then(printers => {
 				var response = [];
 				for (var i=0; i<printers.length; i++) {
@@ -42,10 +42,10 @@ module.exports = {
 		});
 	},
 	startClaim: function(req, res) {
-		if (!req.user){res.sendStatus(401);return;}
+		if (!req.session.user){res.sendStatus(401);return;}
 		models.printer.findOne({where : {callsign: req.params.id}}).then(function(remotePrinter) {
 			if (remotePrinter){
-				remotePrinter.startClaim(models,req.user.id);
+				remotePrinter.startClaim(models,req.session.user.id);
 				res.sendStatus(200);
 			}
 			else {
@@ -54,12 +54,12 @@ module.exports = {
 		})
 	},
 	attemptClaim: function(req,res) {
-		if (!req.user){res.sendStatus(401);return;}
+		if (!req.session.user){res.sendStatus(401);return;}
 		models.printer.findOne({where: {callsign: req.params.id}}).then(function(remotePrinter) {
 			if (remotePrinter){
 				models.printer.attemptClaim(models,remotePrinter,req.body.code).then(modelResult => {
 					if (modelResult){
-						models.user.findOne({where :{id:req.user.id}}).then(user => {
+						models.user.findOne({where :{id:req.session.user.id}}).then(user => {
 							user.addPrinter(remotePrinter).then(result => {
 								remotePrinter.update({claimed:true}).then(updated => {
 									res.send(true);
@@ -78,17 +78,30 @@ module.exports = {
 	sendMessage: function(req, res) {
 		res.sendStatus(200);	
 	},
+	
+	sendUpdate: function(req, res) {
+		if (!req.session.user){res.sendStatus(401);return;}
+		models.printer.findOne({where: {callsign: req.params.id}}).then(function(remotePrinter) {
+			if (remotePrinter){
+				models.printer.sendUpdate(models,remotePrinter).then(result => {
+					res.send(result.toString());
+				});
+			}
+			else{res.sendStatus(404);}
+		});
+	},
+
 //START OF REMOTE API
     firstContact: function(req, res) {
-	var callsign = crypto.randomBytes(3).toString('hex');
-	var code = crypto.randomBytes(9).toString('hex');
-	var responseForPrinter = {};
+		var callsign = crypto.randomBytes(3).toString('hex');
+		var code = crypto.randomBytes(9).toString('hex');
+		var responseForPrinter = {};
 
-	responseForPrinter['code'] = code;
-	responseForPrinter['callsign'] = callsign;
+		responseForPrinter['code'] = code;
+		responseForPrinter['callsign'] = callsign;
 
-	models.printer.create({callsign:callsign, code:code, claimed:false});
-	res.send(JSON.stringify(responseForPrinter));
+		models.printer.create({callsign:callsign, code:code, claimed:false});
+		res.send(JSON.stringify(responseForPrinter));
     },
 
     checkMessages: function(req, res) {
@@ -116,6 +129,7 @@ module.exports = {
 		}
 		
 		remotePrinter.getMessages().then(messages=>{
+			responseForPrinter['type'] = 'CHECKIN';
 			if (messages.length){
 				responseForPrinter['status'] = 1;
 				responseForPrinter['humanReadable'] = messages.length+ " new messages";
@@ -128,6 +142,7 @@ module.exports = {
 					toAdd['timestamp'] = m.timestamp;
 					toAdd['from'] = m.from;
 					toAdd['to'] = m.to;
+					toAdd['type'] = m.type;
 					responseForPrinter['data']['messages'].push(toAdd);
 					m.destroy();
 				}

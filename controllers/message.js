@@ -11,7 +11,7 @@ module.exports = {
 	},
 	//START OF FRONTEND API
 	sendMessage: function(req,res) {
-		models.user.findOne({where:{id:req.user.id}}).then(fromUser => {
+		models.user.findOne({where:{id:req.session.user.id}}).then(fromUser => {
 			models.user.findOne({where:{id:req.body.user}}).then(toUser => {
 				if (!toUser){res.send("No such user");return;}
 				fromUser.getFriends({where:{id:req.body.user}}).then(friend => {

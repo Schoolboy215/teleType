@@ -4,6 +4,7 @@
                 <md-subheader class="md-no-sticky">Your printer</md-subheader>
                 <md-list-item class="md-1-line" ng-repeat="p in claimed track by $index">{{p}}
 			<md-button class="md-raised md-primary" ng-click="getShareCode(p)">share</md-button>
+			<md-button class="md-raised" ng-click="sendUpdate(p)">update</md-button>
                 </md-list-item>
         </md-list>
 	<md-list flex ng-if="unclaimed.length">

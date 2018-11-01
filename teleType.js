@@ -6,12 +6,10 @@ var	express = require('express'),
 	bodyParser = require('body-parser'),
 	errorHandler = require('errorhandler'),
 	session = require('express-session'),
-	sqlite3 = require('sqlite3'),
-	passport = require('passport');
+	sqlite3 = require('sqlite3');
 
 // Load config
 var config = require('./config')('production');
-require('./config/passport')(passport,config);
 
 // Initialize DB
 var models = require('./models');
@@ -26,8 +24,6 @@ app.use(session({
 	resave: false,
 	saveUninitialized: true 
 }));
-app.use(passport.initialize());
-app.use(passport.session());
 app.engine('html', mustacheExpress());
 
 // Serve Static Files
@@ -41,7 +37,7 @@ app.use(express.static('public'));
 var index = require('./routes/index');
 var api = require('./routes/api');
 //var dashboard = require('./routes/dashboard');
-require('./routes/auth.js')(app,passport);
+require('./routes/auth.js')(app);
 
 app.all('/api*', api);
 app.all('/', index);

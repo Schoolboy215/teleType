@@ -18,6 +18,13 @@ angular.module('TeleTypeApp')
 				);
 			});
 		}
+		$scope.sendUpdate = function(id) {
+			printerLoader.sendUpdate(id).then(result => {
+				$mdToast.show(
+					$mdToast.simple().textContent(result).position("top right").hideDelay(2000)
+				);
+			});
+		}
 		$scope.useShareCode = function() {
 			var codePrompt = $mdDialog.prompt()
 				.title("Use someone else's printer share code")

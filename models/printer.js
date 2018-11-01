@@ -21,6 +21,15 @@ module.exports = function(sequelize, DataTypes) {
 			this.sendMessage(models,"Your code is "+generatedCode);
 		})
 	};
+
+	Printer.sendUpdate = function(models, _printer) {
+		return new Promise(function (resolve, reject) {
+			models.message.create({body:"Time to update your code!",from:"Server",to:"Printer",type:"UPDATE"}).then(message => {
+				_printer.addMessage(message);
+				resolve("Update added to printer messages.");
+			})
+		});
+	};
 	
 	Printer.attemptClaim = function(models, _printer, _code) {
 		return new Promise(function (resolve,reject) {
@@ -42,7 +51,7 @@ module.exports = function(sequelize, DataTypes) {
 				models.share.create({code:generatedCode, claimed:false}).then(share => {
 					share.setPrinter(printer);
 					resolve(generatedCode);                        		
-	                	});
+	            });
 			});
 		});
 	}

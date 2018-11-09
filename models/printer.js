@@ -14,6 +14,12 @@ module.exports = function(sequelize, DataTypes) {
 		})
 	};
 
+	Printer.prototype.sendGroupMessage = function(models, _fromName, _groupName, _message) {
+		models.message.create({body:_message.body,from:_fromName,to: _groupName,imageData:_message.imageData}).then(message => {
+			this.addMessage(message);
+		});
+	}
+
 	Printer.prototype.startClaim = function(models, _userId) {
 		var generatedCode = Math.floor(1000+Math.random()*9000);
 		models.claim.create({userId:_userId, code:generatedCode, validated:false}).then(claim => {

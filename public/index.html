@@ -8,6 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="/stylesheets/loader.css" />
 		<link rel="stylesheet" type="text/css" href="/stylesheets/docs.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 	</head>
 	<body>
 		<div ng-controller="navCtrl as nc" ng-cloak="" ng-app="TeleTypeApp">
@@ -50,6 +51,22 @@
                                                         <div class="md-ripple-container" style></div>
                                                 </a>
                                         </menu-link>
+				</li>
+				<li class="parent-list-item">
+                                        <menu-link section="section" class="ng-scope ng-isolate-scope">
+                                                <a class="md-button md-ink-ripple" md-colors="{background:'accent'}" ng-click="nc.toggleLeft()" ng-href="#groups" style>
+                                                        <span class="ng-scope" style>Groups</span>
+                                                        <div class="md-ripple-container" style></div>
+                                                </a>
+                                        </menu-link>
+				</li>
+				<li class="parent-list-item">
+                                        <menu-link section="section" class="ng-scope ng-isolate-scope">
+                                                <a class="md-button md-ink-ripple" md-colors="{background:'accent'}" ng-click="nc.toggleLeft()" ng-href="#profile" style>
+                                                        <span class="ng-scope" style>Profile</span>
+                                                        <div class="md-ripple-container" style></div>
+                                                </a>
+                                        </menu-link>
                                 </li>
 				<li ng-if="!nc.curUser" class="parent-list-item">
                                         <menu-link section="section" class="ng-scope ng-isolate-scope">
@@ -70,11 +87,9 @@
 		</section>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>-->
-		<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>-->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-route.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-sanitize.js"></script>	
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-sanitize.js"></script>
 
 		<!--ANGULAR MATERIAL-->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
@@ -82,18 +97,25 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-messages.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script>
 
-	        <script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
+		<script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
 		
+		<!--FLOW-->
+		<script src="ng-flow/dist/ng-flow-standalone.min.js"></script>
+
 		<!--Load our code-->
 		<script src="/js/app.js"></script>
 		<!--Load services-->
 		<script src="/js/services/printer.js"></script>
 		<script src="/js/services/friend.js"></script>
+		<script src="/js/services/profile.js"></script>
+		<script src="/js/services/group.js"></script>
 
 		<!--Load controllers-->
 		<script src="/js/controllers/printer.js"></script>
 		<script src="/js/controllers/navCtrl.js"></script>
 		<script src="/js/controllers/loginCtrl.js"></script>
 		<script src="/js/controllers/friend.js"></script>
+		<script src="/js/controllers/profile.js"></script>
+		<script src="/js/controllers/group.js"></script>
 	</body>
 </html>

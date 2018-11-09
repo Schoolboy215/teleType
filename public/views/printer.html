@@ -1,5 +1,5 @@
-<h1>Printers</h1>
 <div ng-app="TeleTypeApp" ng-controller="printerController" id="popupContainer" style="position:relative" ng-cloak>
+	<h1>Printers</h1>
 	<md-list flex ng-if="claimed.length">
                 <md-subheader class="md-no-sticky">Your printer</md-subheader>
                 <md-list-item class="md-1-line" ng-repeat="p in claimed track by $index">{{p}}

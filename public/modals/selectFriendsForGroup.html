@@ -1,0 +1,36 @@
+<md-dialog aria-label="Friends">
+    <md-content>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Friends</h2>
+                <span flex></span>
+                <md-button aria-label="Close" ng-click="cancel()" class="md-fab md-mini md-accent">
+                        <i class="fa fa-times"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <fieldset >
+            <legend>Select the friends you want to add</legend>
+            <div layout="row" layout-wrap flex>
+                <div flex-xs flex="50">
+                    <md-checkbox aria-label="Select All"
+                                ng-checked="isChecked()"
+                                md-indeterminate="isIndeterminate()"
+                                ng-click="toggleAll()">
+                        <span ng-if="isChecked()">Un-</span>Select All
+                    </md-checkbox>
+                </div>
+                <div flex="100" ng-repeat="f in friends">
+                    <md-checkbox ng-checked="exists(f.id, selected)" ng-click="toggle(f.id, selected)">
+                        {{ f.name }}
+                    </md-checkbox>
+                </div>
+            </div>
+        </fieldset>
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised md-primary" ng-click="add()">
+                Add
+            </md-button>
+        </md-dialog-actions>
+    </md-content>
+</md-dialog>

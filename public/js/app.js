@@ -1,4 +1,4 @@
-var app = angular.module('TeleTypeApp', ['ngRoute','ngMaterial','ngSanitize']);
+var app = angular.module('TeleTypeApp', ['ngRoute','ngMaterial','ngSanitize','flow']);
 
 app.config(function($routeProvider) {
 	$routeProvider
@@ -15,6 +15,10 @@ app.config(function($routeProvider) {
 		.when('/login', {
 			templateUrl: 'views/login.html',
 			controller: 'loginCtrl'
+		}).when('/profile', {
+			templateUrl: 'views/profile.html'
+		}).when('/groups', {
+			templateUrl: 'views/groups.html'
 		});
 }).factory('authResponseInterceptor', ['$q', '$location', function($q,$location){
 	return {

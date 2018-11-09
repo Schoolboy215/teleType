@@ -26,9 +26,19 @@ module.exports = function(sequelize, DataTypes) {
 		});
 	};
 
+	User.setName = function(name,_user) {
+		return new Promise(function(resolve,reject) {
+			_user.name = name;
+			_user.save().then(() => {
+				resolve();
+			});
+		});
+	};
+
 	User.associate = function(models) {
 		User.belongsToMany(models.printer, {through: "user_printer" });
 		User.belongsToMany(User, {as: 'Friends', through: "friends" });
+		User.belongsToMany(models.group, {through: "user_group"});
 		User.hasOne(models.claim);
 		User.hasOne(models.invite);
         }

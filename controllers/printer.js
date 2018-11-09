@@ -143,6 +143,10 @@ module.exports = {
 					toAdd['from'] = m.from;
 					toAdd['to'] = m.to;
 					toAdd['type'] = m.type;
+					if (m.imageData)
+					{
+						toAdd['imageData'] = m.imageData;
+					}
 					responseForPrinter['data']['messages'].push(toAdd);
 					m.destroy();
 				}

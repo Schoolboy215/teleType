@@ -77,19 +77,17 @@ angular.module('TeleTypeApp')
 			);
 		}
 
-		$scope.sendMessage = function(id) {
-			var messagePrompt = $mdDialog.prompt()
-				.title('What do you want to send?')
-				.textContent('Type your message below')
-				.placeholder('Message')
-				.ariaLabel('message input')
-				.ok('Send')
-				.cancel('Cancel');
-
-			$mdDialog.show(messagePrompt).then(function(result) {
-				$scope.startLoad();
-				$http.post('/api/messages/send',{'user':id, 'message': result}).then(response => {
-					$scope.stopLoad();
+		$scope.sendMessage = function(id,ev) {
+			$mdDialog.show({
+				controller: DialogController,
+				templateUrl: '../modals/composeMessage.html',
+				flex: '66',
+				parent: angular.element(document.body),
+				targetEvent: ev,
+				clickOutsideToClose:true,
+				fullscreen: true // Only for -xs, -sm breakpoints.
+			}).then(function(messageInput) {
+				$http.post('/api/users/message',{'user':id, 'message': messageInput}).then(response => {
 					$mdToast.show(
 						$mdToast.simple()
 						.textContent(response['data'])
@@ -99,6 +97,34 @@ angular.module('TeleTypeApp')
 				});
 			}, function() {
 			});
+		}
+
+		function DialogController($scope, $mdDialog) {
+			$scope.messageInput = {
+				body: "",
+				imageData: ""
+			};
+			$scope.hide = function() {
+			  $mdDialog.hide();
+			};
+		
+			$scope.cancel = function() {
+			  $mdDialog.cancel();
+			};
+		
+			$scope.send = function() {
+				$mdDialog.hide($scope.messageInput);
+			};
+
+			$scope.processFiles = function(file)
+			{
+				var base64;
+				var fileReader = new FileReader();
+						fileReader.onload = function (event) {
+								$scope.messageInput.imageData = event.target.result;
+						};
+				fileReader.readAsDataURL(file.file);
+			};
 		}
 	}]).controller('fabCtrl', function($scope,$timeout) {
 		var self = this;
@@ -114,4 +140,71 @@ angular.module('TeleTypeApp')
 				self.tooltipVisible = self.isOpen;
 			}
 		});
-	});
+	}).directive("ngFileSelect", function(fileReader, $timeout) {
+		return {
+		  scope: {
+			ngModel: '='
+		  },
+		  link: function($scope, el) {
+			function getFile(file) {
+			  fileReader.readAsDataUrl(file, $scope)
+				.then(function(result) {
+				  $timeout(function() {
+					$scope.ngModel = result;
+				  });
+				});
+			}
+	
+			el.bind("change", function(e) {
+			  var file = (e.srcElement || e.target).files[0];
+			  getFile(file);
+			});
+		  }
+		};
+	  }).factory("fileReader", function($q, $log) {
+		var onLoad = function(reader, deferred, scope) {
+		  return function() {
+			scope.$apply(function() {
+			  deferred.resolve(reader.result);
+			});
+		  };
+		};
+	  
+		var onError = function(reader, deferred, scope) {
+		  return function() {
+			scope.$apply(function() {
+			  deferred.reject(reader.result);
+			});
+		  };
+		};
+	  
+		var onProgress = function(reader, scope) {
+		  return function(event) {
+			scope.$broadcast("fileProgress", {
+			  total: event.total,
+			  loaded: event.loaded
+			});
+		  };
+		};
+	  
+		var getReader = function(deferred, scope) {
+		  var reader = new FileReader();
+		  reader.onload = onLoad(reader, deferred, scope);
+		  reader.onerror = onError(reader, deferred, scope);
+		  reader.onprogress = onProgress(reader, scope);
+		  return reader;
+		};
+	  
+		var readAsDataURL = function(file, scope) {
+		  var deferred = $q.defer();
+	  
+		  var reader = getReader(deferred, scope);
+		  reader.readAsDataURL(file);
+	  
+		  return deferred.promise;
+		};
+	  
+		return {
+		  readAsDataUrl: readAsDataURL
+		};
+	  });

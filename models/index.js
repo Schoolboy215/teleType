@@ -1,14 +1,15 @@
 "use strict";
 
-var 	fs		= require("fs"),
+var	fs			= require("fs"),
 	path		= require("path"),
 	Sequelize	= require("sequelize"),
-	db		= {};
+	db			= {};
 
-var	sequelize = 	new Sequelize('mainDB', null, null, {
-				dialect: "sqlite",
-				storage: "./data.sqlite"
-			});
+var	sequelize =	new Sequelize('mainDB', null, null, {
+					logging: false,
+					dialect: "sqlite",
+					storage: "./data.sqlite"
+				});
 fs
 	.readdirSync(__dirname)
 	.filter(function(file) {

@@ -56,4 +56,12 @@ module.exports = function(app) {
 	app.get('/login/getUser', function(req,res) {
 		return res.send(req.session.user);		
 	});
+
+	app.get('/logout', function(req,res) {
+		if (req.session) {
+			req.session.destroy(function(err) {
+				res.send("Logged out");
+			});
+		}
+	});
 };

@@ -2,3 +2,4 @@ config/index.js
 data.sqlite
 public/favicon.ico
 node_modules/*
+uploadedImages/*

@@ -5,13 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Chrome client",
             "type": "chrome",
             "request": "launch",
-            "address": "127.0.0.1",
-            "port": 80,
-            "webRoot": "${workspaceFolder}",
-            "timeout": 30000
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost",
+            "webRoot": "${workspaceFolder}\\public"
         },
         {
             "name": "Server",
@@ -25,7 +23,7 @@
             "name": "All",
             "configurations": [
                 "Server",
-                "Chrome client"
+                "Launch Chrome against localhost"
             ]
         }
     ]

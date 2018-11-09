@@ -6,7 +6,7 @@ var models = require('../models');
 const oauth2Client = new google.auth.OAuth2(
   config.googleClientId,
   config.googleClientSecret,
-  "http://localhost/login/callback"
+  config.callbackURL
 );
 
 // generate a url that asks permissions for Google+ and Google Calendar scopes

@@ -1,27 +1,28 @@
-<md-dialog ng-cloak aria-label="Compose message">
-    <form>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>Compose</h2>
-                <span flex></span>
-                <md-button aria-label="Close" ng-click="cancel()" class="md-fab md-mini md-accent">
-                        <i class="fa fa-times"></i>
+<md-dialog aria-label="Compose message">
+    <md-dialog-content>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Compose</h2>
+                    <span flex></span>
+                    <md-button aria-label="Close" ng-click="cancel()" class="md-fab md-mini md-accent">
+                            <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-input-container class="md-block">
+                <textarea placeholder = "Type here" ng-model="messageInput.body" md-maxlength="512" rows="3" md-select-on-focus></textarea>
+            </md-input-container>
+            <div    flow-init="{singleFile:true}"
+                    flow-file-added="processFiles($file)">
+                <md-button flow-btn flow-attrs="{accept:['image/png','image/jpeg','image/jpg']}" class="md-fab md-mini md-primary md-hue-1">
+                    <i class="fa fa-camera-retro"></i>
                 </md-button>
+                <p ng-show="$flow.files.length">{{$flow.files[0].name}}</p>
             </div>
-        </md-toolbar>
-        <md-input-container class="md-block">
-            <textarea placeholder = "Type here" ng-model="messageInput.body" md-maxlength="512" rows="5" md-select-on-focus></textarea>
-        </md-input-container>
-        <div    flow-init="{singleFile:true}"
-                flow-file-added="processFiles($file)">
-            <flow-btn flow-attrs="{accept:['image/png','image/jpeg','image/jpg']}" class="md-button md-fab md-mini md-primary md-hue-1">
-                <i class="fa fa-camera-retro"></i>
-            </span>
-        </div>
-        <md-dialog-actions layout="row">
-            <md-button ng-click="send()">
-                Send
-            </md-button>
-        </md-dialog-actions>
-    </form>
+            <md-dialog-actions layout="row">
+                <md-button class="md-raised md-primary md-hue-2" ng-click="send()">
+                    Send
+                </md-button>
+            </md-dialog-actions>
+    </md-dialog-content>
 </md-dialog>

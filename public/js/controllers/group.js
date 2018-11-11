@@ -25,7 +25,6 @@ angular.module('TeleTypeApp')
             controller: DialogController,
             templateUrl: '../modals/composeMessage.html',
             flex: '66',
-            parent: angular.element(document.body),
             clickOutsideToClose:true,
             fullscreen: true // Only for -xs, -sm breakpoints.
         }).then(function(messageInput) {
@@ -86,7 +85,6 @@ angular.module('TeleTypeApp')
                 scope: $scope,
                 preserveScope: true,
                 templateUrl: '../modals/viewGroupMembers.html',
-                parent: angular.element(document.body),
                 clickOutsideToClose:true,
                 fullscreen:true
             }).then(function() {
@@ -104,7 +102,6 @@ angular.module('TeleTypeApp')
                 scope: $scope,
                 preserveScope: true,
                 templateUrl: '../modals/selectFriendsForGroup.html',
-                parent: angular.element(document.body),
                 clickOutsideToClose:true,
                 fullscreen:true
             }).then(function(_selected) {

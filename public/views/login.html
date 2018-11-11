@@ -1,5 +1,16 @@
+<style>
+	.blueBack {
+		background-color: #4285f4;
+		color:white;
+		padding-right: 5px;
+		padding-left: 5px;
+	}
+</style>
 <div ng-show="user == false">
-	<md-button class="md-raised" ng-click="googleLogin()">Login with Google</md-button>
+	<button class="md-button md-raised layout-row" style="padding-right:0px" ng-click="googleLogin()">
+		<md-icon md-svg-icon="/res/Google_G_Logo.svg"></md-icon>
+		<div class="blueBack">Login with Google</div>
+	</button>
 </div>
 <div ng-show="user != false">
 	<h1>Welcome, {{user}}</h1>

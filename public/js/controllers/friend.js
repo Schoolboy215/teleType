@@ -87,7 +87,7 @@ angular.module('TeleTypeApp')
 				clickOutsideToClose:true,
 				fullscreen: true // Only for -xs, -sm breakpoints.
 			}).then(function(messageInput) {
-				$http.post('/api/users/message',{'user':id, 'message': messageInput}).then(response => {
+				$http.post('api/users/message',{'user':id, 'message': messageInput}).then(response => {
 					$mdToast.show(
 						$mdToast.simple()
 						.textContent(response['data'])

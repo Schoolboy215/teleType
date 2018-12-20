@@ -10,7 +10,7 @@
                 </div>
             </md-toolbar>
             <md-input-container class="md-block">
-                <textarea placeholder = "Type here" ng-model="messageInput.body" md-maxlength="512" rows="3" md-select-on-focus></textarea>
+                <textarea class="messageInputBox" md-autofocus placeholder = "Type here" ng-model="messageInput.body" md-maxlength="512" cols="30" rows="3" md-select-on-focus></textarea>
             </md-input-container>
             <div    flow-init="{singleFile:true}"
                     flow-file-added="processFiles($file)">
@@ -20,7 +20,7 @@
                 <p ng-show="$flow.files.length">{{$flow.files[0].name}}</p>
             </div>
             <md-dialog-actions layout="row">
-                <md-button class="md-raised md-primary md-hue-2" ng-click="send()">
+                <md-button type="button" class="md-raised md-primary md-hue-2" ng-click="send()">
                     Send
                 </md-button>
             </md-dialog-actions>

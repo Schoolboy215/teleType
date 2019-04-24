@@ -20,12 +20,14 @@ angular.module('TeleTypeApp')
         }, function() {
         });
     }
-    $scope.sendMessage = function(groupId) {
+    $scope.sendMessage = function(groupId, name) {
+        $scope.sendToName = name;
         $mdDialog.show({
             controller: DialogController,
             templateUrl: '../modals/composeMessage.html',
             flex: '66',
             clickOutsideToClose:true,
+            scope: $scope.$new(),
             fullscreen: true // Only for -xs, -sm breakpoints.
         }).then(function(messageInput) {
             groupService.sendMessage(groupId, messageInput).then(result => {

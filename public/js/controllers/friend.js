@@ -77,13 +77,15 @@ angular.module('TeleTypeApp')
 			);
 		}
 
-		$scope.sendMessage = function(id,ev) {
+		$scope.sendMessage = function(id,name,ev) {
+			$scope.sendToName = name;
 			$mdDialog.show({
 				controller: DialogController,
 				templateUrl: '../modals/composeMessage.html',
 				flex: '66',
 				parent: angular.element(document.body),
 				targetEvent: ev,
+				scope: $scope.$new(),
 				clickOutsideToClose:true,
 				fullscreen: true // Only for -xs, -sm breakpoints.
 			}).then(function(messageInput) {

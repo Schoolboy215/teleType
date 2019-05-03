@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
 		body:		DataTypes.STRING(512),
 		from:		DataTypes.STRING(64),
 		to:			DataTypes.STRING(64),
-		timestamp:	{type: DataTypes.STRING(19), defaultValue: sequelize.literal("(datetime(CURRENT_TIMESTAMP,'utc'))")},
+		timestamp:	{type: DataTypes.STRING(19), defaultValue: sequelize.literal("CURRENT_TIMESTAMP")},
 		type:		DataTypes.STRING(8),
 		imageData:	DataTypes.BLOB
 	});

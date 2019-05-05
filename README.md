@@ -14,6 +14,8 @@ Make a copy of this repo at the place you want the server to run using `git clon
 
 Go into that directory and run `npm install`. This is where you'll see errors come up if your version of node or npm ends up being a problem. Good luck!
 
+Create a directory called "uploadedImages" inside your teleType directory. **Your server won't be able to process image messages without this**
+
 Open the file at `config/index.js` and replace the placeholders with the actual clientId and clientSecret you got from your google app. Note that the "local" configuration uses localhost for the callback. This is what I did during development. If you ever want to switch over to the development config, open "teleType.js" and look for the line that loads the config. Replace "production" with "local"
 
 That should be all you need to get the node server ready to run. As far as actually getting it hosted, that will depend on what web server you use. Just look for a guide on using (nginx, apache, etc.) with nodejs and you should get some good information.
